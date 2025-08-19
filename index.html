@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto Transversal - Desarrollo de Software</title>
+    <style>
+        /* Estilos generales y de reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Estilos del encabezado (Hero) */
+        .hero {
+            text-align: center;
+            padding: 40px 0;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        /* Estilos de las secciones */
+        .section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+        }
+
+        .section h2 {
+            color: #4c51bf;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* Contenedor de Fases */
+        .phases-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .phase {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 15px;
+            padding: 30px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .phase:hover {
+            transform: scale(1.02);
+        }
+
+        .phase::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .phase:hover::before {
+            transform: scale(1.5);
+        }
+
+        .phase h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .phase-number {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .phase ul {
+            list-style: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .phase li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .phase li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* Grilla de Proyectos */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 5px solid;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(102, 126, 234, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .project-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .project-card.vet { border-left-color: #10b981; }
+        .project-card.club { border-left-color: #3b82f6; }
+        .project-card.biblio { border-left-color: #8b5cf6; }
+        .project-card.medi { border-left-color: #ef4444; }
+        .project-card.reserva { border-left-color: #f59e0b; }
+        .project-card.taller { border-left-color: #6b7280; }
+
+        .project-card h3 {
+            color: #1f2937;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-tag {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .vet .project-tag { background: #d1fae5; color: #065f46; }
+        .club .project-tag { background: #dbeafe; color: #1e40af; }
+        .biblio .project-tag { background: #ede9fe; color: #5b21b6; }
+        .medi .project-tag { background: #fee2e2; color: #991b1b; }
+        .reserva .project-tag { background: #fef3c7; color: #92400e; }
+        .taller .project-tag { background: #f3f4f6; color: #374151; }
+
+        .project-description {
+            color: #6b7280;
+            font-size: 0.95rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Línea de tiempo */
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+            transform: translateY(-50%);
+        }
+
+        .timeline-item {
+            background: white;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .timeline-item:hover {
+            transform: scale(1.1);
+        }
+        
+        .timeline-item-content {
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .timeline-item-sub {
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        /* Pautas */
+        .guidelines {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        .guidelines h2 {
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .guideline-item {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .guideline-item h3 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        /* Navegación por Pestañas */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-tab {
+            padding: 15px 30px;
+            border: none;
+            background: transparent;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-tab.active,
+        .nav-tab:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Diseño Responsivo */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .phases-container,
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline {
+                flex-direction: column;
+                gap: 20px;
+                align-items: flex-start;
+            }
+            
+            .timeline::before {
+                left: 40px;
+                top: 0;
+                bottom: 0;
+                width: 3px;
+                height: 100%;
+                transform: translateX(-50%);
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="hero">
+            <h1>Proyecto Transversal</h1>
+            <p>Desarrollo de Soluciones de Software Completas</p>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('overview', this)">Descripción</button>
+            <button class="nav-tab" onclick="showTab('phases', this)">Fases</button>
+            <button class="nav-tab" onclick="showTab('projects', this)">Proyectos</button>
+            <button class="nav-tab" onclick="showTab('guidelines', this)">Pautas</button>
+        </nav>
+
+        <main>
+            <!-- Pestaña de Descripción General -->
+            <div id="overview" class="tab-content active">
+                <section class="section">
+                    <h2><span class="icon">🎯</span>Objetivo Principal</h2>
+                    <p style="font-size: 1.1rem; color: #4b5563;">
+                        Desarrollar una solución de software completa y funcional para un cliente simulado, 
+                        operando en un servidor local configurado por los estudiantes, aplicando conocimientos 
+                        de <strong>Diseño y Desarrollo de Software</strong>, <strong>Análisis y Administración de Sistemas Operativos</strong>, 
+                        y <strong>Análisis de Redes y Protocolos de Comunicación</strong>.
+                    </p>
+                </section>
+
+                <section class="section">
+                    <h2><span class="icon">⏱️</span>Estructura Temporal</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div>
+                                <div class="timeline-item-content">FASE 1</div>
+                                <div class="timeline-item-sub">Análisis</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div>
+                                <div class="timeline-item-content">FASE 2</div>
+                                <div class="timeline-item-sub">Backend</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div>
+                                <div class="timeline-item-content">FASE 3</div>
+                                <div class="timeline-item-sub">Frontend</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Pestaña de Fases -->
+            <div id="phases" class="tab-content">
+                <div class="phases-container">
+                    <div class="phase">
+                        <div class="phase-number">1</div>
+                        <h3>Análisis y Diseño</h3>
+                        <ul>
+                            <li>Documento de Definición profesional</li>
+                            <li>Levantamiento de Requisitos</li>
+                            <li>Diseño de Base de Datos (MER y MR)</li>
+                            <li>Mockups Frontend (UI/UX)</li>
+                            <li>Plan de Infraestructura</li>
+                        </ul>
+                    </div>
+
+                    <div class="phase" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <div class="phase-number">2</div>
+                        <h3>Infraestructura y Backend</h3>
+                        <ul>
+                            <li>Montaje del Servidor Virtualizado</li>
+                            <li>Implementación de Base de Datos</li>
+                            <li>Desarrollo del Backend (API)</li>
+                            <li>Configuración de Red y Firewall</li>
+                        </ul>
+                    </div>
+
+                    <div class="phase" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                        <div class="phase-number">3</div>
+                        <h3>Frontend y Despliegue</h3>
+                        <ul>
+                            <li>Desarrollo del Frontend</li>
+                            <li>Sistema de Seguridad (Login, Roles)</li>
+                            <li>Implementación HTTPS</li>
+                            <li>Pruebas y Puesta en Marcha</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pestaña de Proyectos -->
+            <div id="projects" class="tab-content">
+                <section class="section">
+                    <h2><span class="icon">💡</span>Proyectos Disponibles</h2>
+                    <p style="margin-bottom: 30px; color: #6b7280;">Selecciona uno de los siguientes proyectos para desarrollar durante el semestre:</p>
+                    
+                    <div class="projects-grid">
+                        <div class="project-card vet">
+                            <div class="project-tag">VetSys</div>
+                            <h3>🐾 Sistema de Gestión para Clínica Veterinaria</h3>
+                            <p class="project-description">
+                                Aplicación web para administrar pacientes (mascotas) y clientes. 
+                                Incluye registro clínico, agenda de citas e historial de atenciones.
+                            </p>
+                        </div>
+
+                        <div class="project-card club">
+                            <div class="project-tag">ClubManager</div>
+                            <h3>⚽ Plataforma para Club Deportivo</h3>
+                            <p class="project-description">
+                                Gestión de socios, control de cuotas, inscripción a clases 
+                                y calendario de eventos deportivos.
+                            </p>
+                        </div>
+
+                        <div class="project-card biblio">
+                            <div class="project-tag">BiblioTech</div>
+                            <h3>📚 Sistema para Biblioteca</h3>
+                            <p class="project-description">
+                                Catálogo de libros, búsquedas, registro de socios, 
+                                control de préstamos y cálculo de multas.
+                            </p>
+                        </div>
+
+                        <div class="project-card medi">
+                            <div class="project-tag">MediAgenda</div>
+                            <h3>🏥 Agenda Digital Médica</h3>
+                            <p class="project-description">
+                                Gestión de agenda para profesionales independientes. 
+                                Citas, fichas de pacientes e historial de visitas.
+                            </p>
+                        </div>
+
+                        <div class="project-card reserva">
+                            <div class="project-tag">ReservaPro</div>
+                            <h3>🍽️ Sistema de Reservas para Restaurante</h3>
+                            <p class="project-description">
+                                Reservas de mesas online, disponibilidad en tiempo real 
+                                y mapa de ocupación para el personal.
+                            </p>
+                        </div>
+
+                        <div class="project-card taller">
+                            <div class="project-tag">TallerNet</div>
+                            <h3>🔧 Órdenes de Trabajo para Taller</h3>
+                            <p class="project-description">
+                                Administración de reparaciones, órdenes de trabajo, 
+                                registro de repuestos y notificaciones a clientes.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Pestaña de Pautas -->
+            <div id="guidelines" class="tab-content">
+                <section class="guidelines">
+                    <h2><span class="icon">📋</span>Pautas Generales</h2>
+                    
+                    <div class="guideline-item">
+                        <h3>🗓️ Planificación de Tiempos</h3>
+                        <p>Crear y mantener una Carta Gantt simple para planificar tareas, asignar responsables y establecer plazos internos para las tres fases del proyecto.</p>
+                    </div>
+
+                    <div class="guideline-item">
+                        <h3>📝 Documentación del Desarrollo</h3>
+                        <p>Generar un documento técnico formal desde la Fase 1 que evolucione con el proyecto, registrando desde requisitos iniciales hasta el diseño final.</p>
+                    </div>
+
+                    <div class="guideline-item">
+                        <h3>💻 Entorno Técnico</h3>
+                        <p>Configurar un servidor local con sistema operativo, servicios web, base de datos e implementar protocolos de seguridad, incluido HTTPS.</p>
+                    </div>
+
+                    <div class="guideline-item">
+                        <h3>🎯 Entregables</h3>
+                        <p>Cada fase tiene entregables específicos que deben cumplir con estándares profesionales de calidad y funcionalidad completa.</p>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        /**
+         * Función para mostrar la pestaña seleccionada y ocultar las demás.
+         * @param {string} tabName - El ID del contenido de la pestaña a mostrar.
+         * @param {HTMLElement} element - El botón de la pestaña que fue clickeado.
+         */
+        function showTab(tabName, element) {
+            // Ocultar todos los contenidos de las pestañas
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Remover la clase 'active' de todos los botones de pestaña
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Mostrar el contenido de la pestaña seleccionada
+            document.getElementById(tabName).classList.add('active');
+            
+            // Añadir la clase 'active' al botón de la pestaña clickeada
+            element.classList.add('active');
+        }
+
+        /**
+         * Configuración para Intersection Observer para animar elementos al hacer scroll.
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1, // El elemento se considera visible cuando el 10% está en pantalla
+                rootMargin: '0px 0px -50px 0px' // Reduce el área de detección para que la animación se active un poco más tarde
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Aplica la animación cuando el elemento entra en el viewport
+                        entry.target.style.animation = `fadeInUp 1s ease-out forwards`;
+                        // Deja de observar el elemento una vez que ha sido animado
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Selecciona todos los elementos que se animarán y los observa
+            const elementsToAnimate = document.querySelectorAll('.section, .phase, .project-card, .guideline-item, .timeline-item');
+            elementsToAnimate.forEach(el => {
+                // Oculta los elementos inicialmente para que la animación sea visible
+                el.style.opacity = '0';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html> 
